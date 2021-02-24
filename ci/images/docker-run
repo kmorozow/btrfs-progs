@@ -1,0 +1,10 @@
+#!/bin/sh
+# Run the container
+
+prefix=kdave
+image=$(basename `pwd` | tr '[A-Z]' '[a-z]')
+
+# Device mapper devices are not visible inside the environment if the /dev mount
+# is the default one (tmpfs instead of devtmpfs)
+# Mounts and loop device manipulation is required
+docker run --mount type=bind,source=/dev,target=/dev -it --privileged "$prefix/$image" "$@"
